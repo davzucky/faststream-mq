@@ -1,0 +1,16 @@
+{
+  "name": "faststream-mq",
+  "dockerComposeFile": ["../docker-compose.yaml", "docker-compose.devcontainer.yaml"],
+  "service": "workspace",
+  "workspaceFolder": "/workspace/faststream-mq",
+  "runServices": ["workspace", "ibmmq"],
+  "postCreateCommand": "uv sync --all-extras --group dev && uv run prek install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "charliermarsh.ruff",
+        "ms-python.python"
+      ]
+    }
+  }
+}

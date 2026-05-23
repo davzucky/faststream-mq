@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install IBM MQ client SDK
+        run: sudo ./scripts/install-mq-client.sh
+      - name: Build
+        run: uv build
+        env:
+          MQ_FILE_PATH: /opt/mqm
+          LD_LIBRARY_PATH: /opt/mqm/lib64
+      - name: Publish to PyPI
+        run: uv publish --trusted-publishing automatic

@@ -1,0 +1,23 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff format
+        entry: uv run --no-sync ruff format --check
+        language: system
+        types_or: [python, pyi]
+      - id: ruff-check
+        name: ruff check
+        entry: uv run --no-sync ruff check
+        language: system
+        types_or: [python, pyi]
+      - id: ty-check
+        name: ty check
+        entry: ./scripts/ty-check.sh
+        language: system
+        pass_filenames: false
+      - id: tests
+        name: pytest mocked
+        entry: uv run --no-sync pytest -m 'not connected and not slow'
+        language: system
+        pass_filenames: false

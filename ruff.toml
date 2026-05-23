@@ -1,0 +1,32 @@
+line-length = 88
+target-version = "py310"
+
+[lint]
+select = [
+  "E",
+  "F",
+  "I",
+  "UP",
+  "B",
+  "ASYNC",
+  "S",
+  "TID",
+  "RUF",
+]
+ignore = [
+  "ASYNC109",
+  "B008",
+  "E501",
+  "S101",
+  "S110",
+  "S303",
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = ["E731", "S101", "S105", "S106", "S108", "S311"]
+"examples/**/*.py" = ["S106", "T201"]
+"docs/**/*.py" = ["S106", "T201"]
+
+[lint.isort]
+combine-as-imports = true
+known-first-party = ["faststream_mq"]

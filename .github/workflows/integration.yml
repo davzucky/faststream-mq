@@ -1,0 +1,48 @@
+name: IBM MQ integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  connected:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Start IBM MQ
+        run: docker compose up -d ibmmq ibmmq_ha2
+      - name: Install IBM MQ client SDK
+        run: sudo ./scripts/install-mq-client.sh
+      - name: Install dependencies
+        run: uv sync --all-extras --group dev
+        env:
+          MQ_FILE_PATH: /opt/mqm
+          LD_LIBRARY_PATH: /opt/mqm/lib64
+      - name: Wait for IBM MQ
+        run: |
+          for i in {1..60}; do
+            if docker compose ps ibmmq | grep -q healthy; then
+              exit 0
+            fi
+            docker compose ps
+            sleep 5
+          done
+          docker compose logs ibmmq
+          exit 1
+      - name: Connected tests
+        run: uv run pytest -m connected
+        env:
+          MQ_FILE_PATH: /opt/mqm
+          LD_LIBRARY_PATH: /opt/mqm/lib64
+      - name: Docker logs
+        if: always()
+        run: docker compose logs ibmmq ibmmq_ha2
