@@ -1,5 +1,5 @@
 import asyncio
-from functools import partial
+from typing import Any
 
 import pytest
 
@@ -46,7 +46,10 @@ class TestRouter(MQTestcaseConfig):
 @pytest.mark.mq()
 @pytest.mark.asyncio()
 class TestRouterLocal(MQMemoryTestcaseConfig, FastAPILocalTestcase):
-    router_class = partial(StreamRouter, queue_manager="QM1")
+    @staticmethod
+    def router_class(**kwargs: Any) -> StreamRouter:
+        return StreamRouter(queue_manager="QM1", **kwargs)
+
     broker_router_class = BrokerRouter
 
     async def test_nested_router(self, queue: str) -> None:
