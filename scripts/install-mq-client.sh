@@ -22,6 +22,18 @@ trap 'rm -rf "${TMP_DIR}"' EXIT
 
 curl --fail --location --retry 3 --output "${TMP_DIR}/${MQ_ARCHIVE}" "${MQ_URL}"
 ${SUDO} mkdir -p "${MQ_INSTALL_DIR}"
-${SUDO} tar -xzf "${TMP_DIR}/${MQ_ARCHIVE}" -C "${MQ_INSTALL_DIR}" --strip-components=1
+${SUDO} tar -xzf "${TMP_DIR}/${MQ_ARCHIVE}" -C "${MQ_INSTALL_DIR}"
+
+if [ ! -f "${MQ_INSTALL_DIR}/inc/cmqc.h" ]; then
+  echo "IBM MQ client SDK extraction did not create ${MQ_INSTALL_DIR}/inc/cmqc.h" >&2
+  echo "Found candidate header paths:" >&2
+  find "${MQ_INSTALL_DIR}" -name cmqc.h -print >&2 || true
+  exit 1
+fi
+
+if [ ! -d "${MQ_INSTALL_DIR}/lib64" ]; then
+  echo "IBM MQ client SDK extraction did not create ${MQ_INSTALL_DIR}/lib64" >&2
+  exit 1
+fi
 
 echo "Installed IBM MQ client SDK at ${MQ_INSTALL_DIR}"
