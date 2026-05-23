@@ -1,9 +1,9 @@
 {
   "name": "faststream-mq",
-  "dockerComposeFile": ["../docker-compose.yaml", "docker-compose.devcontainer.yaml"],
+  "dockerComposeFile": "docker-compose.yaml",
   "service": "workspace",
   "workspaceFolder": "/workspace/faststream-mq",
-  "runServices": ["workspace", "ibmmq"],
+  "runServices": ["workspace", "ibmmq", "ibmmq_ha2"],
   "postCreateCommand": "uv sync --all-extras --group dev && uv run prek install",
   "customizations": {
     "vscode": {
