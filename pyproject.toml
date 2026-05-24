@@ -70,9 +70,14 @@ lint = [
     "ruff==0.14.14",
     "ty>=0.0.1a23",
 ]
+docs = [
+    "mkdocs-material>=9.7.1,<10",
+    "mdx-include>=1.4.2,<2",
+]
 dev = [
     { include-group = "test" },
     { include-group = "lint" },
+    { include-group = "docs" },
 ]
 
 [tool.uv.build-backend]

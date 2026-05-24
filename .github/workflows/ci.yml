@@ -37,6 +37,22 @@ jobs:
       - name: Tests without connected broker
         run: uv run pytest -m 'not connected and not slow'
 
+  docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install docs dependencies
+        run: uv sync --only-group docs
+      - name: Build docs
+        run: uv run --only-group docs mkdocs build --strict
+
   build:
     name: Build package
     runs-on: ubuntu-latest
