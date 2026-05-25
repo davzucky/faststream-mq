@@ -16,7 +16,7 @@ services:
       ibmmq:
         condition: service_healthy
       ibmmq_ha2:
-        condition: service_started
+        condition: service_healthy
 
   ibmmq:
     image: icr.io/ibm-messaging/mq:latest
@@ -49,3 +49,9 @@ services:
       MQ_ENABLE_EMBEDDED_WEB_SERVER: "false"
     security_opt:
       - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "bash", "-lc", "echo 'DISPLAY QMGR' | runmqsc QM1 >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
