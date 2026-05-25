@@ -7,7 +7,7 @@ class MQQueue:
 
     @classmethod
     def validate(cls, value: "MQQueue | str") -> "MQQueue":
-        if isinstance(value, cls):
+        if isinstance(value, MQQueue):
             return value
         return cls(name=value)
 

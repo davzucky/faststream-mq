@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 
 class MQRegistrator(Registrator[Any, MQBrokerConfig]):
     @override
-    def subscriber(  # type: ignore[override]
+    def subscriber(  # type: ignore[override]  # ty: ignore[invalid-method-override]
         self,
         queue: MQQueue | str,
         *,
@@ -63,7 +63,7 @@ class MQRegistrator(Registrator[Any, MQBrokerConfig]):
         )
 
     @override
-    def publisher(  # type: ignore[override]
+    def publisher(  # type: ignore[override]  # ty: ignore[invalid-method-override]
         self,
         queue: MQQueue | str,
         *,
@@ -101,7 +101,7 @@ class MQRegistrator(Registrator[Any, MQBrokerConfig]):
         return publisher
 
     @override
-    def include_router(
+    def include_router(  # ty: ignore[invalid-method-override]
         self,
         router: "MQRegistrator",  # type: ignore[override]
         *,

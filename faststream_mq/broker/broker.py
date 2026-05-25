@@ -1,7 +1,7 @@
 import logging
 import time
 from collections.abc import Iterable, Sequence
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 import anyio
 from fast_depends import Provider, dependency_provider
@@ -36,7 +36,7 @@ if TYPE_CHECKING:
     from faststream.specification.schema.extra import Tag, TagDict
 
     from faststream_mq.helpers.client import AsyncMQConnection
-    from faststream_mq.message import MQMessage
+    from faststream_mq.message import MQMessage, MQRawMessage  # noqa: F401
 
 
 class MQBroker(
@@ -109,7 +109,7 @@ class MQBroker(
         protocol = protocol or "ibmmq"
 
         super().__init__(
-            routers=routers,
+            routers=routers,  # ty: ignore[invalid-argument-type]
             config=MQBrokerConfig(
                 connection_config=MQConnectionConfig(
                     queue_manager=queue_manager,
@@ -146,7 +146,7 @@ class MQBroker(
                     "broker": self,
                 },
             ),
-            specification=BrokerSpec(
+            specification=BrokerSpec(  # ty: ignore[unknown-argument]
                 description=description,
                 url=[specification_url],
                 protocol=protocol,
@@ -156,15 +156,19 @@ class MQBroker(
             ),
         )
 
+    @property
+    def _mq_config(self) -> MQBrokerConfig:
+        return cast(MQBrokerConfig, self.config)
+
     @override
     async def _connect(self) -> "AsyncMQConnection":
-        timeout = self.config.connection_config.startup_retry_timeout
-        interval = self.config.connection_config.startup_retry_interval
+        timeout = self._mq_config.connection_config.startup_retry_timeout
+        interval = self._mq_config.connection_config.startup_retry_interval
         deadline = time.monotonic() + timeout
 
         while True:
             try:
-                await self.config.connect()
+                await self._mq_config.connect()
                 break
             except Exception as exc:
                 if not is_retryable_mq_exception(exc):
@@ -173,8 +177,8 @@ class MQBroker(
                     raise
                 await anyio.sleep(interval)
 
-        assert self.config.producer.connection is not None
-        return self.config.producer.connection
+        assert self._mq_config.producer.connection is not None
+        return self._mq_config.producer.connection
 
     async def stop(
         self,
@@ -183,7 +187,7 @@ class MQBroker(
         exc_tb: Optional["TracebackType"] = None,
     ) -> None:
         await super().stop(exc_type, exc_val, exc_tb)
-        await self.config.disconnect()
+        await self._mq_config.disconnect()
         self._connection = None
 
     async def start(self) -> None:
@@ -192,9 +196,7 @@ class MQBroker(
 
     @override
     async def ping(self, timeout: float | None = None) -> bool:
-        if not self._producer:
-            return False
-        return await self._producer.ping(timeout or 5.0)
+        return await self._mq_config.producer.ping(timeout or 5.0)
 
     @override
     async def publish(
@@ -215,7 +217,7 @@ class MQBroker(
         cmd = MQPublishCommand(
             message,
             destination=MQQueue.validate(queue)
-            .add_prefix(self.config.prefix)
+            .add_prefix(self._mq_config.prefix)
             .routing(),
             headers=headers,
             correlation_id=correlation_id,
@@ -231,7 +233,7 @@ class MQBroker(
         await super()._basic_publish(cmd, producer=self._producer)
 
     @override
-    async def request(
+    async def request(  # ty: ignore[invalid-method-override]
         self,
         message: "SendableMessage" = None,
         queue: MQQueue | str = "",
@@ -248,7 +250,7 @@ class MQBroker(
         cmd = MQPublishCommand(
             message,
             destination=MQQueue.validate(queue)
-            .add_prefix(self.config.prefix)
+            .add_prefix(self._mq_config.prefix)
             .routing(),
             headers=headers,
             correlation_id=correlation_id,

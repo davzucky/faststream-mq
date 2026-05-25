@@ -97,7 +97,7 @@ class MQRoute(SubscriberRoute):
         )
 
 
-class MQRouter(MQRegistrator, BrokerRouter[Any]):
+class MQRouter(MQRegistrator, BrokerRouter[Any]):  # ty: ignore[invalid-generic-class]
     def __init__(
         self,
         prefix: str = "",
@@ -111,8 +111,8 @@ class MQRouter(MQRegistrator, BrokerRouter[Any]):
         include_in_schema: bool = True,
     ) -> None:
         super().__init__(
-            handlers=handlers,
-            routers=routers,
+            handlers=handlers,  # ty: ignore[unknown-argument]
+            routers=routers,  # ty: ignore[invalid-argument-type]
             config=MQBrokerConfig(
                 prefix=prefix,
                 include_in_schema=include_in_schema,

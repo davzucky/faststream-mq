@@ -4,7 +4,7 @@ import asyncio
 import logging
 import time
 from collections.abc import AsyncIterator, Sequence
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import anyio
 from faststream._internal.endpoint.subscriber import SubscriberUsecase
@@ -29,6 +29,7 @@ if TYPE_CHECKING:
     )
     from faststream.message import StreamMessage
 
+    from faststream_mq.configs import MQBrokerConfig
     from faststream_mq.message import MQMessage, MQRawMessage
     from faststream_mq.schemas import MQQueue
 
@@ -54,20 +55,24 @@ class MQSubscriber(TasksMixin, SubscriberUsecase["MQRawMessage"]):
         self._test_messages: asyncio.Queue[MQRawMessage] | None = None
         self._direct_message: MQRawMessage | None = None
 
+    @property
+    def _mq_outer_config(self) -> MQBrokerConfig:
+        return cast("MQBrokerConfig", self._outer_config)
+
     def routing(self) -> str:
-        return f"{self._outer_config.prefix}{self.queue.routing()}"
+        return f"{self._mq_outer_config.prefix}{self.queue.routing()}"
 
     @override
     async def start(self) -> None:
         await super().start()
 
-        if getattr(self._outer_config.producer, "is_test_producer", False):
+        if getattr(self._mq_outer_config.producer, "is_test_producer", False):
             self._test_messages = asyncio.Queue()
             self._post_start()
             return
 
         self._consumer = AsyncMQConnection(
-            connection_config=self._outer_config.connection_config,
+            connection_config=self._mq_outer_config.connection_config,
         )
         await self._startup_connect_consumer()
 
@@ -101,8 +106,8 @@ class MQSubscriber(TasksMixin, SubscriberUsecase["MQRawMessage"]):
     async def _startup_connect_consumer(self) -> None:
         assert self._consumer is not None
 
-        timeout = self._outer_config.connection_config.startup_retry_timeout
-        interval = self._outer_config.connection_config.startup_retry_interval
+        timeout = self._mq_outer_config.connection_config.startup_retry_timeout
+        interval = self._mq_outer_config.connection_config.startup_retry_interval
         deadline = time.monotonic() + timeout
 
         while True:
@@ -206,13 +211,15 @@ class MQSubscriber(TasksMixin, SubscriberUsecase["MQRawMessage"]):
             )
             if self.ack_policy is AckPolicy.MANUAL:
                 self._direct_message = raw_message
-            return message
+            return cast("MQMessage", message)
         except Exception as exc:
             await self._settle_unresolved_message(raw_message, exc)
             raise
 
     @override
-    async def __aiter__(self) -> AsyncIterator[MQMessage]:
+    async def __aiter__(  # ty: ignore[invalid-method-override]
+        self,
+    ) -> AsyncIterator[MQMessage]:
         assert not self.calls, (
             "You can't use iterator method if subscriber has registered handlers."
         )
@@ -258,17 +265,17 @@ class MQSubscriber(TasksMixin, SubscriberUsecase["MQRawMessage"]):
 
             if self.ack_policy is AckPolicy.MANUAL:
                 self._direct_message = raw_message
-            yield msg
+            yield cast("MQMessage", msg)
 
     def _make_response_publisher(
         self,
         message: StreamMessage[Any],
     ) -> Sequence[PublisherProto]:
-        producer = self._outer_config.producer
+        producer = self._mq_outer_config.producer
         if message.raw_message.connection is not None:
             producer = AsyncMQConnectionProducer(
                 message.raw_message.connection,
-                serializer=self._outer_config.fd_config._serializer,
+                serializer=self._mq_outer_config.fd_config._serializer,
             )
 
         return (
