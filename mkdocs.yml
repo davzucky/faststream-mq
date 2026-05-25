@@ -17,6 +17,7 @@ nav:
   - High Availability: ha.md
   - Security: security.md
   - Troubleshooting: troubleshooting.md
+  - Release Checklist: release-checklist.md
   - Decisions:
       - ADRs:
           - Publish FastStream MQ as a standalone adapter: adr/0001-publish-faststream-mq-as-standalone-adapter.md
