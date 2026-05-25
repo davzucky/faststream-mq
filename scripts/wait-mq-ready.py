@@ -45,14 +45,14 @@ def _wait_for_endpoint(
     endpoint: MQEndpoint, *, timeout: float, interval: float
 ) -> None:
     deadline = time.monotonic() + timeout
-    last_error: BaseException | None = None
+    last_error: Exception | None = None
 
     while time.monotonic() < deadline:
         try:
             _probe(endpoint)
             print(f"IBM MQ endpoint {endpoint.name} is ready at {endpoint.conn_name}.")
             return
-        except BaseException as exc:
+        except Exception as exc:
             last_error = exc
             print(
                 f"IBM MQ endpoint {endpoint.name} is not ready yet at "
