@@ -11,6 +11,7 @@ nav:
   - Publishing: publishing.md
   - IBM MQ Client SDK: mq-client-sdk.md
   - Connected Testing: connected-testing.md
+  - Migration: migration.md
   - RPC: rpc.md
   - Message: message.md
   - High Availability: ha.md

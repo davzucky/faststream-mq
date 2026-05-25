@@ -52,7 +52,7 @@ from faststream.mq import MQBroker, TestMQBroker
 from faststream_mq import MQBroker, TestMQBroker
 ```
 
-There is intentionally no `faststream.mq` compatibility shim. A standalone package cannot safely inject a submodule into the non-namespace `faststream` package.
+There is intentionally no `faststream.mq` compatibility shim. A standalone package cannot safely inject a submodule into the non-namespace `faststream` package. See the [migration guide](https://faststream-mq.readthedocs.io/en/latest/migration/) for project migration details.
 
 ## Development
 
