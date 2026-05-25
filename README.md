@@ -71,6 +71,7 @@ uv run ruff format
 uv run ruff check
 ./scripts/ty-check.sh
 uv run pytest
+uv run --only-group docs mkdocs build --strict
 ```
 
 Connected IBM MQ tests require the local MQ service:
@@ -78,6 +79,16 @@ Connected IBM MQ tests require the local MQ service:
 ```bash
 docker compose up -d ibmmq
 uv run pytest -m connected
+```
+
+## Documentation
+
+Documentation is built with MkDocs using the `docs` uv dependency group.
+Read the Docs can build the site from `.readthedocs.yaml` without a separate `requirements.txt`.
+
+```bash
+uv sync --only-group docs
+uv run --only-group docs mkdocs serve
 ```
 
 ## Release

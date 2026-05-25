@@ -1,0 +1,39 @@
+site_name: faststream-mq
+site_description: Standalone IBM MQ adapter for FastStream
+site_url: https://faststream-mq.readthedocs.io/
+repo_url: https://github.com/davzucky/faststream-mq
+repo_name: davzucky/faststream-mq
+
+docs_dir: docs
+
+nav:
+  - Home: index.md
+  - Publishing: publishing.md
+  - RPC: rpc.md
+  - Message: message.md
+  - High Availability: ha.md
+  - Security: security.md
+  - Decisions:
+      - ADRs:
+          - Publish FastStream MQ as a standalone adapter: adr/0001-publish-faststream-mq-as-standalone-adapter.md
+      - PRD: prd/faststream-mq-standalone-prd.md
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - mdx_include:
+      base_path: docs
+
+plugins:
+  - search
+
+strict: true
