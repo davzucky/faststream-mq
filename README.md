@@ -74,7 +74,7 @@ uv run pytest
 uv run --only-group docs mkdocs build --strict
 ```
 
-Connected IBM MQ tests require the local MQ services and a successful client-connectivity probe:
+Connected IBM MQ tests require the local MQ services and a successful client-connectivity probe. See the [connected testing docs](https://faststream-mq.readthedocs.io/en/latest/connected-testing/) for details and troubleshooting.
 
 ```bash
 docker compose up -d ibmmq ibmmq_ha2
