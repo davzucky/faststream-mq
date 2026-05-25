@@ -4,6 +4,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from secrets import token_hex
+from typing import cast
 
 from cryptography import x509
 from cryptography.hazmat.primitives import hashes
@@ -133,7 +134,10 @@ def _build_pkcs12(
             if client_key_password is not None
             else None
         )
-        key = load_pem_private_key(key_data, password=key_password)
+        key = cast(
+            pkcs12.PKCS12PrivateKeyTypes,
+            load_pem_private_key(key_data, password=key_password),
+        )
 
         ca_chain = _load_distinct_certificates(ca_cert)
         ca_entries = [

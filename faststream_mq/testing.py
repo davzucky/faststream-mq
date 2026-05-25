@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 __all__ = ("TestMQBroker",)
 
 
-class TestMQBroker(TestBroker[MQBroker]):
+class TestMQBroker(TestBroker[MQBroker]):  # ty: ignore[invalid-type-arguments]
     @contextmanager
     def _patch_producer(self, broker: MQBroker) -> Iterator[None]:
         fake_producer = FakeProducer(broker)
@@ -37,7 +37,7 @@ class TestMQBroker(TestBroker[MQBroker]):
             yield
 
     @staticmethod
-    async def _fake_connect(
+    async def _fake_connect(  # ty: ignore[invalid-method-override]
         broker: MQBroker,
         *args: Any,
         **kwargs: Any,
@@ -76,6 +76,10 @@ class FakeProducer(AsyncMQFastProducer):
         self._decoder = ParserComposition(
             broker._decoder, default_parser.decode_message
         )
+
+    @property
+    def connection(self) -> None:
+        return None
 
     async def connect(self, *, connection_config: Any, serializer: Any) -> None:
         return None

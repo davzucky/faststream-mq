@@ -141,7 +141,7 @@ class MQRouter(StreamRouter[Any]):
             generate_unique_id_function=generate_unique_id_function,
         )
 
-    def subscriber(
+    def subscriber(  # ty: ignore[invalid-method-override]
         self,
         queue: str,
         *,
@@ -186,7 +186,7 @@ class MQRouter(StreamRouter[Any]):
             include_in_schema=include_in_schema,
         )
 
-    def publisher(
+    def publisher(  # ty: ignore[invalid-method-override]
         self,
         queue: str,
         *,

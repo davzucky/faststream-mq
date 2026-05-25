@@ -69,7 +69,7 @@ class MQMessage(StreamMessage[MQRawMessage]):
         await self.ack()
 
     async def _wait_for_broker_settle(self, operation: Awaitable[None]) -> None:
-        task = asyncio.create_task(operation)
+        task = asyncio.ensure_future(operation)
 
         try:
             await asyncio.shield(task)

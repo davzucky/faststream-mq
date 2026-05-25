@@ -19,6 +19,10 @@ if TYPE_CHECKING:
 
 
 class AsyncMQFastProducer(ProducerProto[MQPublishCommand]):
+    @property
+    @abstractmethod
+    def connection(self) -> AsyncMQConnection | None: ...
+
     @abstractmethod
     async def connect(
         self,
@@ -55,6 +59,10 @@ class AsyncMQConnectionProducer(ProducerProto[MQPublishCommand]):
 
 
 class FakeMQFastProducer(AsyncMQFastProducer):
+    @property
+    def connection(self) -> AsyncMQConnection | None:
+        return None
+
     async def connect(
         self,
         *,

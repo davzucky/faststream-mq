@@ -2,9 +2,14 @@ from typing import TYPE_CHECKING, Any
 
 from faststream.opentelemetry import TelemetrySettingsProvider
 from faststream.opentelemetry.consts import MESSAGING_DESTINATION_PUBLISH_NAME
-from opentelemetry.semconv.trace import SpanAttributes
 
 from faststream_mq.response import MQPublishCommand
+
+MESSAGING_SYSTEM = "messaging.system"
+MESSAGING_DESTINATION_NAME = "messaging.destination.name"
+MESSAGING_MESSAGE_ID = "messaging.message.id"
+MESSAGING_MESSAGE_CONVERSATION_ID = "messaging.message.conversation_id"
+MESSAGING_MESSAGE_PAYLOAD_SIZE_BYTES = "messaging.message.payload_size_bytes"
 
 if TYPE_CHECKING:
     from faststream.message import StreamMessage
@@ -26,12 +31,12 @@ class MQTelemetrySettingsProvider(
     ) -> dict[str, Any]:
         conversation_id = msg.correlation_id or msg.message_id
         return {
-            SpanAttributes.MESSAGING_SYSTEM: self.messaging_system,
-            SpanAttributes.MESSAGING_DESTINATION_NAME: msg.raw_message.queue,
+            MESSAGING_SYSTEM: self.messaging_system,
+            MESSAGING_DESTINATION_NAME: msg.raw_message.queue,
             MESSAGING_DESTINATION_PUBLISH_NAME: msg.raw_message.queue,
-            SpanAttributes.MESSAGING_MESSAGE_ID: msg.message_id,
-            SpanAttributes.MESSAGING_MESSAGE_CONVERSATION_ID: conversation_id,
-            SpanAttributes.MESSAGING_MESSAGE_PAYLOAD_SIZE_BYTES: len(msg.body),
+            MESSAGING_MESSAGE_ID: msg.message_id,
+            MESSAGING_MESSAGE_CONVERSATION_ID: conversation_id,
+            MESSAGING_MESSAGE_PAYLOAD_SIZE_BYTES: len(msg.body),
         }
 
     def get_consume_destination_name(self, msg: "StreamMessage[MQRawMessage]") -> str:
@@ -40,11 +45,11 @@ class MQTelemetrySettingsProvider(
     def get_publish_attrs_from_cmd(self, cmd: MQPublishCommand) -> dict[str, Any]:
         conversation_id = cmd.correlation_id or cmd.message_id
         attrs = {
-            SpanAttributes.MESSAGING_SYSTEM: self.messaging_system,
-            SpanAttributes.MESSAGING_DESTINATION_NAME: cmd.destination,
+            MESSAGING_SYSTEM: self.messaging_system,
+            MESSAGING_DESTINATION_NAME: cmd.destination,
         }
         if conversation_id is not None:
-            attrs[SpanAttributes.MESSAGING_MESSAGE_CONVERSATION_ID] = conversation_id
+            attrs[MESSAGING_MESSAGE_CONVERSATION_ID] = conversation_id
         return attrs
 
     def get_publish_destination_name(self, cmd: MQPublishCommand) -> str:

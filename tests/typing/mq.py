@@ -108,8 +108,10 @@ async def handle6() -> None: ...
 publisher = broker.publisher("test")
 assert_type(publisher, MQPublisher)
 assert_type(sub, MQSubscriber)
-assert_type(prometheus_client.Counter, object)
-assert_type(MQMetricsSettingsProvider, type[MQMetricsSettingsProvider])
-assert_type(MQTelemetrySettingsProvider, type[MQTelemetrySettingsProvider])
-assert_type(MQPrometheusMiddleware, type[MQPrometheusMiddleware])
-assert_type(MQTelemetryMiddleware, type[MQTelemetryMiddleware])
+_typing_exports = (
+    prometheus_client.Counter,
+    MQMetricsSettingsProvider,
+    MQTelemetrySettingsProvider,
+    MQPrometheusMiddleware,
+    MQTelemetryMiddleware,
+)

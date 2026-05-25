@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import json
 import logging
 import os
@@ -35,11 +36,9 @@ logger = logging.getLogger(__name__)
 
 def _load_ibmmq() -> Any:
     try:
-        import ibmmq as mq
+        return importlib.import_module("ibmmq")
     except ImportError as e:  # pragma: no cover - depends on optional dependency
         raise ImportError(INSTALL_FASTSTREAM_MQ) from e
-
-    return mq
 
 
 @dataclass(kw_only=True)
@@ -547,6 +546,7 @@ class AsyncMQConnection:
                     pmo.OriginalMsgHandle = _OTelCompatibleHandle(put_handle)
 
                 queue.put(body, md, pmo)
+                assert md.MsgId is not None
                 request_message_id = bytes(md.MsgId)
                 request_published = True
                 return reply_queue, reply_queue_name, request_message_id
