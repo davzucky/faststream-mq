@@ -74,10 +74,11 @@ uv run pytest
 uv run --only-group docs mkdocs build --strict
 ```
 
-Connected IBM MQ tests require the local MQ service:
+Connected IBM MQ tests require the local MQ services and a successful client-connectivity probe:
 
 ```bash
-docker compose up -d ibmmq
+docker compose up -d ibmmq ibmmq_ha2
+uv run python scripts/wait-mq-ready.py "127.0.0.1(1414)" "127.0.0.1(1415)"
 uv run pytest -m connected
 ```
 

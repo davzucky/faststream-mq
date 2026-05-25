@@ -27,17 +27,22 @@ jobs:
         env:
           MQ_FILE_PATH: /opt/mqm
           LD_LIBRARY_PATH: /opt/mqm/lib64
-      - name: Wait for IBM MQ
+      - name: Wait for IBM MQ containers
         run: |
           for i in {1..60}; do
-            if docker compose ps ibmmq | grep -q healthy; then
+            if docker compose ps ibmmq | grep -q healthy && docker compose ps ibmmq_ha2 | grep -q healthy; then
               exit 0
             fi
             docker compose ps
             sleep 5
           done
-          docker compose logs ibmmq
+          docker compose logs ibmmq ibmmq_ha2
           exit 1
+      - name: Wait for IBM MQ client connections
+        run: uv run python scripts/wait-mq-ready.py "127.0.0.1(1414)" "127.0.0.1(1415)"
+        env:
+          MQ_FILE_PATH: /opt/mqm
+          LD_LIBRARY_PATH: /opt/mqm/lib64
       - name: Connected tests
         run: uv run pytest -m connected
         env:
