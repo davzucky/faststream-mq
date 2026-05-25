@@ -1,5 +1,11 @@
 # faststream-mq
 
+[![CI](https://github.com/davzucky/faststream-mq/actions/workflows/ci.yml/badge.svg)](https://github.com/davzucky/faststream-mq/actions/workflows/ci.yml)
+[![Connected IBM MQ tests](https://github.com/davzucky/faststream-mq/actions/workflows/integration.yml/badge.svg)](https://github.com/davzucky/faststream-mq/actions/workflows/integration.yml)
+[![Docs](https://readthedocs.org/projects/faststream-mq/badge/?version=latest)](https://faststream-mq.readthedocs.io/en/latest/)
+[![PyPI](https://img.shields.io/pypi/v/faststream-mq.svg)](https://pypi.org/project/faststream-mq/)
+[![Python versions](https://img.shields.io/pypi/pyversions/faststream-mq.svg)](https://pypi.org/project/faststream-mq/)
+
 Standalone IBM MQ adapter for [FastStream](https://github.com/ag2ai/faststream).
 
 `faststream-mq` is an early standalone adapter extracted from pending FastStream IBM MQ work. It is already used in production, but still tracks upstream FastStream work closely. If equivalent IBM MQ support is accepted upstream, this package will be deprecated in favor of upstream FastStream.
@@ -94,7 +100,7 @@ uv run --only-group docs mkdocs serve
 
 ## Release
 
-Releases are published from version tags by GitHub Actions using PyPI Trusted Publishing.
+Releases are published from version tags by GitHub Actions using PyPI Trusted Publishing. The release workflow also creates a GitHub Release and attaches the built package artifacts. See the [release checklist](https://faststream-mq.readthedocs.io/en/latest/release-checklist/).
 
 ```bash
 git tag v0.1.0
