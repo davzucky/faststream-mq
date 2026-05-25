@@ -7,6 +7,8 @@ search:
 
 **FastStream** IBM MQ support is implemented on top of the [`ibmmq`](https://github.com/ibm-messaging/mq-mqi-python){.external-link target="_blank"} client.
 
+For local development or source installs, see [IBM MQ Client SDK](mq-client-sdk.md) for native client setup and the `cmqc.h` build error.
+
 ## Known problems
 
 See [Troubleshooting](troubleshooting.md) for current known dependency issues, including the upstream `ibmmq` OpenTelemetry message-handle crash and workaround.

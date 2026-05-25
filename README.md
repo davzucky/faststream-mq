@@ -58,7 +58,7 @@ There is intentionally no `faststream.mq` compatibility shim. A standalone packa
 
 This repository uses `uv`, `uv_build`, `ruff`, `ty`, and `prek`.
 
-Install the IBM MQ client SDK first; the `ibmmq` Python package needs the MQ C headers to build.
+Install the IBM MQ client SDK first; the `ibmmq` Python package needs the MQ C headers to build. See the [IBM MQ Client SDK docs](https://faststream-mq.readthedocs.io/en/latest/mq-client-sdk/) for details and troubleshooting.
 
 ```bash
 MQ_FILE_PATH="$HOME/.local/opt/mqm" ./scripts/install-mq-client.sh
