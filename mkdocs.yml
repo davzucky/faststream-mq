@@ -1,6 +1,6 @@
 site_name: faststream-mq
 site_description: Standalone IBM MQ adapter for FastStream
-site_url: https://faststream-mq.readthedocs.io/
+site_url: https://faststream-mq.readthedocs.io/en/latest/
 repo_url: https://github.com/davzucky/faststream-mq
 repo_name: davzucky/faststream-mq
 

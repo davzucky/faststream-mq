@@ -46,6 +46,7 @@ all = [
 
 [project.urls]
 Homepage = "https://github.com/davzucky/faststream-mq"
+Documentation = "https://faststream-mq.readthedocs.io/en/latest/"
 Source = "https://github.com/davzucky/faststream-mq"
 Tracker = "https://github.com/davzucky/faststream-mq/issues"
 

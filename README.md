@@ -1,5 +1,7 @@
 # faststream-mq
 
+[![Documentation Status](https://readthedocs.org/projects/faststream-mq/badge/?version=latest)](https://faststream-mq.readthedocs.io/en/latest/)
+
 Standalone IBM MQ adapter for [FastStream](https://github.com/ag2ai/faststream).
 
 `faststream-mq` is an early standalone adapter extracted from pending FastStream IBM MQ work. It is already used in production, but still tracks upstream FastStream work closely. If equivalent IBM MQ support is accepted upstream, this package will be deprecated in favor of upstream FastStream.
@@ -82,6 +84,8 @@ uv run pytest -m connected
 ```
 
 ## Documentation
+
+Published documentation is available at <https://faststream-mq.readthedocs.io/en/latest/>.
 
 Documentation is built with MkDocs using the `docs` uv dependency group.
 Read the Docs can build the site from `.readthedocs.yaml` without a separate `requirements.txt`.
