@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import importlib.util
+import importlib
 import platform
 from dataclasses import dataclass
 
@@ -68,14 +68,17 @@ def get_mq_runtime_status(
             reason=platform_warning,
         )
 
-    if importlib.util.find_spec("ibmmq") is None:
+    try:
+        importlib.import_module("ibmmq")
+    except Exception as e:
         return MQRuntimeStatus(
             supported_platform=True,
             ibmmq_installed=False,
             reason=(
-                "IBM MQ Python runtime is unavailable. Missing module: ibmmq. "
-                "Install faststream-mq on a supported MQ client platform with "
-                "the IBM MQ native client libraries available."
+                "IBM MQ Python runtime is unavailable. Missing module or "
+                f"unloadable module: ibmmq. Import failed: {e}. Install "
+                "faststream-mq on a supported MQ client platform with the IBM "
+                "MQ native client libraries available."
             ),
         )
 

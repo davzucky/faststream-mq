@@ -39,11 +39,10 @@ def test_platform_warning_explains_unsupported_native_client_platform() -> None:
 def test_runtime_status_is_unavailable_on_unsupported_platform() -> None:
     status = get_mq_runtime_status(system="Darwin", machine="arm64")
 
-    assert status == MQRuntimeStatus(
-        supported_platform=False,
-        ibmmq_installed=False,
-        reason=status.reason,
-    )
+    assert status.supported_platform is False
+    assert status.ibmmq_installed is False
+    assert status.reason is not None
+    assert "darwin/arm64" in status.reason
     assert not status.available
     assert not is_mq_runtime_available(system="Darwin", machine="arm64")
 
@@ -51,9 +50,10 @@ def test_runtime_status_is_unavailable_on_unsupported_platform() -> None:
 def test_runtime_status_requires_ibmmq_on_supported_platform(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr(
-        "faststream_mq.runtime.importlib.util.find_spec", lambda _: None
-    )
+    def fail_import(_module: str) -> object:
+        raise ImportError("No module named 'ibmmq'")
+
+    monkeypatch.setattr("faststream_mq.runtime.importlib.import_module", fail_import)
 
     status = get_mq_runtime_status(system="Linux", machine="x86_64")
 
@@ -61,14 +61,15 @@ def test_runtime_status_requires_ibmmq_on_supported_platform(
     assert status.ibmmq_installed is False
     assert status.available is False
     assert status.reason is not None
-    assert "Missing module: ibmmq" in status.reason
+    assert "unloadable module: ibmmq" in status.reason
+    assert "No module named 'ibmmq'" in status.reason
 
 
 def test_runtime_status_is_available_when_supported_platform_has_ibmmq(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(
-        "faststream_mq.runtime.importlib.util.find_spec",
+        "faststream_mq.runtime.importlib.import_module",
         lambda _: object(),
     )
 
