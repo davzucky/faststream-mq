@@ -10,7 +10,7 @@ authors = [{ name = "David Zuckerman" }]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
-version = "0.1.0"
+version = "0.2.0"
 keywords = ["faststream", "ibm-mq", "mq", "message-broker", "asyncapi"]
 classifiers = [
     "Development Status :: 3 - Alpha",
