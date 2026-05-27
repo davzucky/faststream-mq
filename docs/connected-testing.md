@@ -2,6 +2,8 @@
 
 Most tests in this repository run without a real queue manager. Tests marked `connected` exercise the adapter against real IBM MQ containers and are required in CI before changes can merge.
 
+Connected tests also require the native IBM MQ runtime. `faststream-mq` is installable on unsupported MQ client platforms for mock testing, but real MQ connections require a Supported MQ Client Platform and importable `ibmmq` runtime. For IBM MQ 9.4 native redistributable C clients, Supported MQ Client Platforms are Linux x86-64 and Windows x64. The connected CI workflow currently automates the Linux path.
+
 ## Start local IBM MQ services
 
 From the repository root, start both queue managers:
@@ -71,9 +73,9 @@ If the devcontainer was already running while services were recreated, reopen th
 
 ## Troubleshooting
 
-### `ibmmq` cannot be imported or `cmqc.h` is missing
+### `ibmmq` cannot be imported, `cmqc.h` is missing, or the platform is unsupported
 
-Install the IBM MQ Client SDK before syncing dependencies. See [IBM MQ Client SDK](mq-client-sdk.md).
+Install the IBM MQ Client SDK before syncing dependencies when you are on a Supported MQ Client Platform. See [IBM MQ Client SDK](mq-client-sdk.md). On unsupported MQ client platforms, use `TestMQBroker` and tests that do not require the native runtime.
 
 ### Readiness probe times out
 

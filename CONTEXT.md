@@ -5,8 +5,8 @@ This context describes the language for publishing the IBM MQ broker adapter as 
 ## Language
 
 **FastStream MQ Adapter**:
-A standalone package that provides IBM MQ broker support for FastStream applications while upstream FastStream review is pending. Its distribution name is `faststream-mq` and its Python import package is `faststream_mq`. Installing it should include the IBM MQ runtime dependencies needed to connect to IBM MQ, preserve the same public API names as the current in-tree `faststream.mq` implementation, document migration from `faststream.mq` to `faststream_mq`, and not provide a `faststream.mq` compatibility shim.
-_Avoid_: `fastream_mq`, `faststream.mq` as the canonical external adapter name, adapter shell without MQ runtime dependencies, compatibility shim
+A standalone package that provides IBM MQ broker support for FastStream applications while upstream FastStream review is pending. Its distribution name is `faststream-mq` and its Python import package is `faststream_mq`. Installing it should work on unsupported MQ client platforms for documentation and mock testing, include the native IBM MQ runtime dependency only on supported MQ client platforms, preserve the same public API names as the current in-tree `faststream.mq` implementation, document migration from `faststream.mq` to `faststream_mq`, and not provide a `faststream.mq` compatibility shim.
+_Avoid_: `fastream_mq`, `faststream.mq` as the canonical external adapter name, mandatory native MQ dependency on unsupported MQ client platforms, compatibility shim
 
 **Forked Extraction**:
 An independently published adapter package extracted from the pending in-tree IBM MQ implementation. It should track the branch closely enough to preserve an upstream merge path, while allowing users to install IBM MQ support before upstream accepts it. The published package should live in `github.com/davzucky/faststream-mq`, preserve Apache-2.0 licensing and appropriate FastStream attribution, and document that it will be deprecated if equivalent IBM MQ support is accepted upstream.
@@ -19,6 +19,10 @@ _Avoid_: source-only extraction, package without release pipeline, undocumented 
 **IBM MQ Development Environment**:
 The local and CI container setup used to run connected IBM MQ tests. It should include a Docker Compose service based on IBM's MQ container project and the devcontainer should start IBM MQ as a companion service.
 _Avoid_: manual-only MQ setup, devcontainer without MQ service
+
+**Supported MQ Client Platform**:
+An operating-system and CPU-architecture combination for which IBM publishes a redistributable IBM MQ native C client library and the FastStream MQ Adapter can load `ibmmq` against that library. For IBM MQ 9.4 redistributable clients, this means Linux x86-64 and Windows x64 for native MQ applications; the Java/JMS redistributable package does not make a platform supported for this Python adapter.
+_Avoid_: assuming all Python platforms are supported, Linux-only policy when IBM also ships Windows x64 native clients, treating Java/JMS-only redistributables as Python MQ runtime support, platform support without native MQ client libraries
 
 **Release Automation**:
 The GitHub Actions workflow that builds and publishes the FastStream MQ Adapter to PyPI. It should publish from version tags using PyPI Trusted Publishing rather than GitHub-stored PyPI API tokens.

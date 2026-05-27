@@ -5,6 +5,8 @@ from faststream._internal._compat import (
     PYDANTIC_V2,
 )
 
+from faststream_mq.testing import require_mq_runtime
+
 skip_windows = pytest.mark.skipif(
     IS_WINDOWS,
     reason="does not run on windows",
@@ -65,17 +67,7 @@ require_aiopika = pytest.mark.skipif(
 )
 
 
-try:
-    import ibmmq  # noqa: F401
-except ImportError:
-    HAS_IBMMQ = False
-else:
-    HAS_IBMMQ = True
-
-require_ibmmq = pytest.mark.skipif(
-    not HAS_IBMMQ,
-    reason="requires ibmmq",
-)
+require_ibmmq = require_mq_runtime
 
 
 try:

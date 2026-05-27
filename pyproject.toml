@@ -10,7 +10,7 @@ authors = [{ name = "David Zuckerman" }]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
-version = "0.1.0"
+version = "0.2.0"
 keywords = ["faststream", "ibm-mq", "mq", "message-broker", "asyncapi"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -29,7 +29,7 @@ classifiers = [
 ]
 dependencies = [
     "faststream>=0.7.0rc1,<0.8",
-    "ibmmq>=2,<3",
+    "ibmmq>=2,<3; (sys_platform == 'linux' and platform_machine == 'x86_64') or (sys_platform == 'linux' and platform_machine == 'AMD64') or (sys_platform == 'linux' and platform_machine == 'amd64') or (sys_platform == 'win32' and platform_machine == 'AMD64') or (sys_platform == 'win32' and platform_machine == 'x86_64') or (sys_platform == 'win32' and platform_machine == 'amd64')",
     "cryptography>=46,<47",
 ]
 
