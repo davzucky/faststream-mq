@@ -13,6 +13,7 @@ from faststream_mq.helpers.ids import generate_mq_id, normalize_mq_id
 from faststream_mq.message import MQRawMessage
 from faststream_mq.parser import MQParser
 from faststream_mq.publisher.producer import AsyncMQFastProducer
+from faststream_mq.runtime import get_mq_runtime_status
 from faststream_mq.schemas import MQQueue
 
 if TYPE_CHECKING:
@@ -22,7 +23,21 @@ if TYPE_CHECKING:
     from faststream_mq.response import MQPublishCommand
     from faststream_mq.subscriber.usecase import MQSubscriber
 
-__all__ = ("TestMQBroker",)
+__all__ = ("TestMQBroker", "require_mq_runtime")
+
+
+class _RequireMQRuntime:
+    def __call__(self, test_func: Any) -> Any:
+        import pytest
+
+        status = get_mq_runtime_status()
+        return pytest.mark.skipif(
+            not status.available,
+            reason=status.reason or "requires IBM MQ runtime",
+        )(test_func)
+
+
+require_mq_runtime = _RequireMQRuntime()
 
 
 class TestMQBroker(TestBroker[MQBroker]):  # ty: ignore[invalid-type-arguments]

@@ -20,6 +20,7 @@ from faststream_mq.helpers.tls import (
 )
 from faststream_mq.message import MQRawMessage
 from faststream_mq.response import MQPublishCommand
+from faststream_mq.runtime import get_mq_runtime_status
 from faststream_mq.tls import MQTLSConfig
 
 if TYPE_CHECKING:
@@ -35,6 +36,10 @@ logger = logging.getLogger(__name__)
 
 
 def _load_ibmmq() -> Any:
+    status = get_mq_runtime_status()
+    if not status.available:
+        raise ImportError(f"{INSTALL_FASTSTREAM_MQ}\n{status.reason}")
+
     try:
         return importlib.import_module("ibmmq")
     except ImportError as e:  # pragma: no cover - depends on optional dependency

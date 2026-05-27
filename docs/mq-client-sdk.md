@@ -1,6 +1,8 @@
 # IBM MQ Client SDK
 
-`faststream-mq` depends on [`ibmmq`](https://github.com/ibm-messaging/mq-mqi-python){.external-link target="_blank"}, which is a Python wrapper around IBM MQ native client libraries.
+`faststream-mq` uses [`ibmmq`](https://github.com/ibm-messaging/mq-mqi-python){.external-link target="_blank"}, which is a Python wrapper around IBM MQ native client libraries.
+
+`faststream-mq` is installable on platforms that cannot run the native IBM MQ client so imports, documentation examples, and `TestMQBroker`-based tests can still work. The real IBM MQ runtime dependency is installed by default only on Supported MQ Client Platforms: platforms where IBM publishes a redistributable native C client for IBM MQ. For IBM MQ 9.4, those platforms are Linux x86-64 and Windows x64.
 
 Depending on your platform and wheel availability, installing `ibmmq` may require the IBM MQ C headers and client libraries to be present on the machine where the package is installed.
 
@@ -16,7 +18,7 @@ fatal error: cmqc.h: No such file or directory
 
 ## Recommended setup for this repository
 
-Use the checked-in helper script before syncing Python dependencies:
+The checked-in helper script installs the Linux x86-64 redistributable native client used by local development containers and CI. Use it before syncing Python dependencies when you need real MQ runtime support on Linux:
 
 ```bash
 MQ_FILE_PATH="$HOME/.local/opt/mqm" ./scripts/install-mq-client.sh
@@ -61,7 +63,7 @@ The devcontainer is configured to install the IBM MQ client SDK and run IBM MQ s
 
 ## CI
 
-The GitHub workflows use `scripts/install-mq-client.sh` before installing dependencies and running tests. If you copy this project into another CI system, keep the same ordering:
+The GitHub workflows use Linux connected testing and run `scripts/install-mq-client.sh` before installing dependencies and running tests. If you copy this project into another CI system for connected tests, keep the same ordering:
 
 1. install IBM MQ client SDK
 2. export the MQ client environment variables

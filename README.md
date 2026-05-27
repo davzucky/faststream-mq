@@ -16,6 +16,8 @@ Standalone IBM MQ adapter for [FastStream](https://github.com/ag2ai/faststream).
 pip install faststream-mq
 ```
 
+Real IBM MQ connections require IBM MQ native C client libraries. For IBM MQ 9.4 redistributable clients, native runtime support is available on Linux x86-64 and Windows x64. The package remains installable on other platforms so `TestMQBroker` and non-connected tests can run without native MQ libraries.
+
 Optional integrations:
 
 ```bash
@@ -64,7 +66,7 @@ There is intentionally no `faststream.mq` compatibility shim. A standalone packa
 
 This repository uses `uv`, `uv_build`, `ruff`, `ty`, and `prek`.
 
-Install the IBM MQ client SDK first; the `ibmmq` Python package needs the MQ C headers to build. See the [IBM MQ Client SDK docs](https://faststream-mq.readthedocs.io/en/latest/mq-client-sdk/) for details and troubleshooting.
+Install the IBM MQ client SDK first when you need real MQ runtime support on a Supported MQ Client Platform; the `ibmmq` Python package needs the MQ C headers to build. See the [IBM MQ Client SDK docs](https://faststream-mq.readthedocs.io/en/latest/mq-client-sdk/) for details and troubleshooting.
 
 ```bash
 MQ_FILE_PATH="$HOME/.local/opt/mqm" ./scripts/install-mq-client.sh
