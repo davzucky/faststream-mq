@@ -16,10 +16,15 @@ class MQSubscriberSpecification(
             return self.config.title_
         return f"{self._outer_config.prefix}{self.config.queue.name}:{self.call_name}"
 
+    @property
+    def address(self) -> str:
+        return f"{self._outer_config.prefix}{self.config.queue.name}"
+
     def get_schema(self) -> dict[str, SubscriberSpec]:
         channel_name = self.name
         return {
             channel_name: SubscriberSpec(
+                address=self.address,
                 description=self.description,
                 operation=Operation(
                     bindings=None,

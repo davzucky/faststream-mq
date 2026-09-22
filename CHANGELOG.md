@@ -6,6 +6,10 @@ This project follows [Semantic Versioning](https://semver.org/). Until `1.0.0`, 
 
 ## [Unreleased]
 
+### Changed
+
+- Require FastStream 0.7.6 or newer, which made `address` required on `SubscriberSpec` and `PublisherSpec`. The AsyncAPI channel `address` is now the prefixed queue name (`orders`, not `orders:Handle`).
+
 ## [0.2.0] - 2026-05-27
 
 ### Added

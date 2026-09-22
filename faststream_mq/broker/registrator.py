@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Sequence
+from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 from faststream._internal.broker.registrator import Registrator
@@ -32,7 +32,7 @@ class MQRegistrator(Registrator[Any, MQBrokerConfig]):
         queue: MQQueue | str,
         *,
         ack_policy: AckPolicy = EMPTY,
-        dependencies: Iterable["Dependant"] = (),
+        dependencies: Sequence["Dependant"] = (),
         parser: Optional["CustomCallable"] = None,
         decoder: Optional["CustomCallable"] = None,
         middlewares: Sequence["SubscriberMiddleware[Any]"] = (),
@@ -106,7 +106,7 @@ class MQRegistrator(Registrator[Any, MQBrokerConfig]):
         router: "MQRegistrator",  # type: ignore[override]
         *,
         prefix: str = "",
-        dependencies: Iterable["Dependant"] = (),
+        dependencies: Sequence["Dependant"] = (),
         middlewares: Sequence["BrokerMiddleware[Any, Any]"] = (),
         include_in_schema: bool | None = None,
     ) -> None:

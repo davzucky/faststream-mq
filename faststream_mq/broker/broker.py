@@ -60,7 +60,7 @@ class MQBroker(
         graceful_timeout: float | None = None,
         decoder: Optional["CustomCallable"] = None,
         parser: Optional["CustomCallable"] = None,
-        dependencies: Iterable["Dependant"] = (),
+        dependencies: Sequence["Dependant"] = (),
         middlewares: Sequence["BrokerMiddleware[Any, Any]"] = (),
         routers: Iterable[MQRegistrator] = (),
         security: Optional["BaseSecurity"] = None,

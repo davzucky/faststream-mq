@@ -59,8 +59,8 @@ class TestMQBroker(TestBroker[MQBroker]):  # ty: ignore[invalid-type-arguments]
     ) -> object:
         return object()
 
-    @staticmethod
     def create_publisher_fake_subscriber(
+        self,
         broker: MQBroker,
         publisher: "MQPublisher",
     ) -> tuple["MQSubscriber", bool]:
