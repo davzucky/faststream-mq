@@ -14,6 +14,7 @@ This project follows [Semantic Versioning](https://semver.org/). Until `1.0.0`, 
 
 - Require FastStream `>=0.7.6,<0.8`.
 - Require cryptography `>=50,<51` and Starlette `>=1.3.1` in the FastAPI extras to exclude versions with known security advisories. Cryptography no longer supports Intel macOS or 32-bit Windows.
+- Update MkDocs Material, PyMdown Extensions, and Pydantic Settings to resolve advisories in documentation and test dependencies.
 - Refresh locked FastAPI, Starlette, and AnyIO dependencies. FastStream also raises the minimum AnyIO version to `4.14.2`.
 
 ## [0.2.0] - 2026-05-27
