@@ -28,18 +28,18 @@ classifiers = [
     "Topic :: System :: Distributed Computing",
 ]
 dependencies = [
-    "faststream>=0.7.0rc1,<0.8",
+    "faststream>=0.7.6,<0.8",
     "ibmmq>=2,<3; (sys_platform == 'linux' and platform_machine == 'x86_64') or (sys_platform == 'linux' and platform_machine == 'AMD64') or (sys_platform == 'linux' and platform_machine == 'amd64') or (sys_platform == 'win32' and platform_machine == 'AMD64') or (sys_platform == 'win32' and platform_machine == 'x86_64') or (sys_platform == 'win32' and platform_machine == 'amd64')",
-    "cryptography>=46,<47",
+    "cryptography>=50,<51",
 ]
 
 [project.optional-dependencies]
-fastapi = ["fastapi>=0.128.0", "starlette"]
+fastapi = ["fastapi>=0.128.0", "starlette>=1.3.1"]
 otel = ["opentelemetry-sdk>=1.24.0,<2.0.0"]
 prometheus = ["prometheus-client>=0.20.0,<0.30.0"]
 all = [
     "fastapi>=0.128.0",
-    "starlette",
+    "starlette>=1.3.1",
     "opentelemetry-sdk>=1.24.0,<2.0.0",
     "prometheus-client>=0.20.0,<0.30.0",
 ]

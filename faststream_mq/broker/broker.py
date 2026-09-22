@@ -140,7 +140,7 @@ class MQBroker(
                     provider=provider or dependency_provider,
                     context=context or ContextRepo(),
                 ),
-                broker_dependencies=dependencies,
+                broker_dependencies=tuple(dependencies),
                 graceful_timeout=graceful_timeout,
                 extra_context={
                     "broker": self,

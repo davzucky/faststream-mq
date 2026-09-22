@@ -217,7 +217,7 @@ class MQSubscriber(TasksMixin, SubscriberUsecase["MQRawMessage"]):
             raise
 
     @override
-    async def __aiter__(  # ty: ignore[invalid-method-override]
+    async def __aiter__(
         self,
     ) -> AsyncIterator[MQMessage]:
         assert not self.calls, (

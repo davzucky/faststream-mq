@@ -19,6 +19,7 @@ class MQPublisherSpecification(
     def get_schema(self) -> dict[str, PublisherSpec]:
         return {
             self.name: PublisherSpec(
+                address=f"{self._outer_config.prefix}{self.config.queue.name}",
                 description=self.config.description_,
                 operation=Operation(
                     bindings=None,

@@ -117,7 +117,7 @@ class MQRouter(MQRegistrator, BrokerRouter[Any]):  # ty: ignore[invalid-generic-
                 prefix=prefix,
                 include_in_schema=include_in_schema,
                 broker_middlewares=middlewares,
-                broker_dependencies=dependencies,
+                broker_dependencies=tuple(dependencies),
                 broker_parser=parser,
                 broker_decoder=decoder,
             ),
