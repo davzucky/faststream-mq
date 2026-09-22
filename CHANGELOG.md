@@ -6,6 +6,8 @@ This project follows [Semantic Versioning](https://semver.org/). Until `1.0.0`, 
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-22
+
 ### Fixed
 
 - AsyncAPI generation for MQ subscribers and publishers with FastStream 0.7.6, including the FastAPI schema endpoint. Channel addresses now contain the queue destination with router prefixes, independently of custom titles.
@@ -62,6 +64,7 @@ Initial standalone release of the FastStream IBM MQ adapter.
 - The adapter depends on FastStream internals and currently uses a narrow FastStream compatibility range.
 - If equivalent IBM MQ support is accepted upstream by FastStream, this package will be deprecated in favor of upstream FastStream.
 
-[Unreleased]: https://github.com/davzucky/faststream-mq/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/davzucky/faststream-mq/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/davzucky/faststream-mq/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/davzucky/faststream-mq/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/davzucky/faststream-mq/releases/tag/v0.1.0
