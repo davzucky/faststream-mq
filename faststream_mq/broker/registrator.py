@@ -59,7 +59,7 @@ class MQRegistrator(Registrator[Any, MQBrokerConfig]):
         return subscriber.add_call(
             parser_=parser,
             decoder_=decoder,
-            dependencies_=dependencies,
+            dependencies_=tuple(dependencies),
         )
 
     @override
@@ -120,7 +120,7 @@ class MQRegistrator(Registrator[Any, MQBrokerConfig]):
         super().include_router(
             router,
             prefix=prefix,
-            dependencies=dependencies,
+            dependencies=tuple(dependencies),
             middlewares=middlewares,
             include_in_schema=include_in_schema,
         )

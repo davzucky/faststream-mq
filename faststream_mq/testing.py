@@ -40,7 +40,7 @@ class _RequireMQRuntime:
 require_mq_runtime = _RequireMQRuntime()
 
 
-class TestMQBroker(TestBroker[MQBroker]):  # ty: ignore[invalid-type-arguments]
+class TestMQBroker(TestBroker[MQBroker]):
     @contextmanager
     def _patch_producer(self, broker: MQBroker) -> Iterator[None]:
         fake_producer = FakeProducer(broker)
@@ -59,8 +59,8 @@ class TestMQBroker(TestBroker[MQBroker]):  # ty: ignore[invalid-type-arguments]
     ) -> object:
         return object()
 
-    @staticmethod
     def create_publisher_fake_subscriber(
+        self,
         broker: MQBroker,
         publisher: "MQPublisher",
     ) -> tuple["MQSubscriber", bool]:

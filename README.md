@@ -16,7 +16,9 @@ Standalone IBM MQ adapter for [FastStream](https://github.com/ag2ai/faststream).
 pip install faststream-mq
 ```
 
-Real IBM MQ connections require IBM MQ native C client libraries. For IBM MQ 9.4 redistributable clients, native runtime support is available on Linux x86-64 and Windows x64. The package remains installable on other platforms so `TestMQBroker` and non-connected tests can run without native MQ libraries.
+Requires FastStream `>=0.7.6,<0.8` and cryptography `>=50,<51`. Cryptography 50 no longer supports Intel macOS or 32-bit Windows. See its [platform changes](https://cryptography.io/en/latest/changelog/#v49-0-0).
+
+Real IBM MQ connections require IBM MQ native C client libraries. For IBM MQ 9.4 redistributable clients, native runtime support is available on Linux x86-64 and Windows x64. On other platforms supported by its dependencies, the package remains installable so `TestMQBroker` and non-connected tests can run without native MQ libraries.
 
 Optional integrations:
 
